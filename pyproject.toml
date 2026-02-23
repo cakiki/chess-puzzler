@@ -1,1 +1,10 @@
+[build-system]
+requires = ["hatchling >= 1.26"]
+build-backend = "hatchling.build"
 
+[project]
+name = "chess-puzzler"
+version = "0.1.0"
+description = "Find and tag chess puzzles from chess games"
+readme = "README.md"
+license = "	AGPL-3.0-or-later"
