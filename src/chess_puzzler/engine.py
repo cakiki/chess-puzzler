@@ -19,3 +19,10 @@ def win_chances(score: Score) -> float:
     if cp is None:
         return 0
     return 2 / (1 + math.exp(MULTIPLIER * cp)) - 1
+
+def get_next_move_pair(engine: SimpleEngine, node: GameNode, winner: Color, limit: chess.engine.Limit) -> NextMovePair:
+    info = engine.analyse(node.board(), multipv = 2, limit = limit)
+    nps.append(info[0]["nps"] / 1000)
+    best = EngineMove(info[0]["pv"][0], info[0]["score"].pov(winner))
+    second = EngineMove(info[1]["pv"][0], info[1]["score"].pov(winner)) if len(info) > 1 else None
+    return NextMovePair(node, winner, best, second)
