@@ -1,6 +1,8 @@
 from dataclasses import dataclass, field
-from typing import Literal
+from typing import Literal, Optional
 from chess import Move, Color
+from chess.pgn import GameNode
+from chess.engine import Score
 
 TagKind = Literal[
     "advancedPawn",
@@ -74,3 +76,15 @@ class Puzzle:
 
     def moves_uci(self) -> list[str]:
         return [m.uci() for m in self.moves]
+    
+@dataclass
+class EngineMove:
+    move: Move
+    score: Score
+
+@dataclass
+class NextMovePair:
+    node: GameNode
+    winner: Color
+    best: EngineMove
+    second: Optional[EngineMove]
