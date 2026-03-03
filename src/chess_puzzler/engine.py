@@ -1,5 +1,8 @@
 import math
+from chess import Color
+from chess.pgn import GameNode
 from chess.engine import SimpleEngine, Limit, Score
+from .model import EngineMove, NextMovePair
 
 EVAL_LIMIT = Limit(depth=15, time=30, nodes=10_000_000)
 PAIR_LIMIT = Limit(depth=50, time=30, nodes=30_000_000)
@@ -20,9 +23,8 @@ def win_chances(score: Score) -> float:
         return 0
     return 2 / (1 + math.exp(MULTIPLIER * cp)) - 1
 
-def get_next_move_pair(engine: SimpleEngine, node: GameNode, winner: Color, limit: chess.engine.Limit) -> NextMovePair:
+def get_next_move_pair(engine: SimpleEngine, node: GameNode, winner: Color, limit: Limit) -> NextMovePair:
     info = engine.analyse(node.board(), multipv = 2, limit = limit)
-    nps.append(info[0]["nps"] / 1000)
     best = EngineMove(info[0]["pv"][0], info[0]["score"].pov(winner))
     second = EngineMove(info[1]["pv"][0], info[1]["score"].pov(winner)) if len(info) > 1 else None
     return NextMovePair(node, winner, best, second)
