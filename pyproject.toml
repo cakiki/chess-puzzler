@@ -9,8 +9,13 @@ requires-python = ">=3.10"
 description = "Find and tag chess puzzles from chess games"
 readme = "README.md"
 license = "AGPL-3.0-or-later"
-
 dependencies = [
     "chess",
     "tqdm",
 ]
+
+[project.optional-dependencies]
+dev = ["pytest", "ruff"]
+
+[tool.ruff]
+line-length = 120
