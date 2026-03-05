@@ -1,12 +1,13 @@
 import math
 from chess import Color
 from chess.pgn import GameNode
-from chess.engine import SimpleEngine, Limit, Score
+from chess.engine import SimpleEngine, Limit, Score, Mate
 from .model import EngineMove, NextMovePair
 
 EVAL_LIMIT = Limit(depth=15, time=30, nodes=10_000_000)
 PAIR_LIMIT = Limit(depth=50, time=30, nodes=30_000_000)
 MATE_DEFENSE_LIMIT = Limit(depth=15, time=10, nodes=10_000_000)
+MATE_SOON = Mate(15)
 MULTIPLIER = -0.00368208  # https://github.com/lichess-org/lila/pull/11148
 
 def open_engine(path: str = "stockfish", threads: int = 4) -> SimpleEngine:
