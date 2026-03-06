@@ -1,5 +1,5 @@
 from dataclasses import dataclass, field
-from typing import Literal, Optional
+from typing import Optional
 from chess import Move, Color
 from chess.pgn import GameNode
 from chess.engine import Score
