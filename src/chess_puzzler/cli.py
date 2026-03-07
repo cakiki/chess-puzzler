@@ -45,13 +45,18 @@ def find(pgn, engine, threads, output, tier, verbose):
                 try:
                     puzzle = generator.analyze_game(game, tier)
                     if puzzle:
-                        out.write(json.dumps({
-                            "fen": puzzle.fen,
-                            "moves": puzzle.moves_uci(),
-                            "cp": puzzle.cp,
-                            "pov": "white" if puzzle.pov else "black",
-                            "game_id": puzzle.game_id,
-                        }) + "\\n")
+                        out.write(
+                            json.dumps(
+                                {
+                                    "fen": puzzle.fen,
+                                    "moves": puzzle.moves_uci(),
+                                    "cp": puzzle.cp,
+                                    "pov": "white" if puzzle.pov else "black",
+                                    "game_id": puzzle.game_id,
+                                }
+                            )
+                            + "\\n"
+                        )
                         if out == sys.stdout:
                             out.flush()
                         logger.info(f"  Puzzle: {puzzle.fen[:30]}... ({len(puzzle.moves)} moves)")
@@ -68,6 +73,7 @@ def find(pgn, engine, threads, output, tier, verbose):
 @click.option("--output", "-o", type=click.Path(path_type=Path))
 def tag(input, output):
     click.echo("Tagging not yet implemented", err=True)
+
 
 if __name__ == "__main__":
     main()

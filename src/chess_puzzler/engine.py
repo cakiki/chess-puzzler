@@ -10,10 +10,12 @@ MATE_DEFENSE_LIMIT = Limit(depth=15, time=10, nodes=10_000_000)
 MATE_SOON = Mate(15)
 MULTIPLIER = -0.00368208  # https://github.com/lichess-org/lila/pull/11148
 
+
 def open_engine(path: str = "stockfish", threads: int = 4) -> SimpleEngine:
     engine = SimpleEngine.popen_uci(path)
     engine.configure({"Threads": threads})
     return engine
+
 
 def win_chances(score: Score) -> float:
     mate = score.mate()
@@ -24,8 +26,9 @@ def win_chances(score: Score) -> float:
         return 0
     return 2 / (1 + math.exp(MULTIPLIER * cp)) - 1
 
+
 def get_next_move_pair(engine: SimpleEngine, node: GameNode, winner: Color, limit: Limit) -> NextMovePair:
-    info = engine.analyse(node.board(), multipv = 2, limit = limit)
+    info = engine.analyse(node.board(), multipv=2, limit=limit)
     best = EngineMove(info[0]["pv"][0], info[0]["score"].pov(winner))
     second = EngineMove(info[1]["pv"][0], info[1]["score"].pov(winner)) if len(info) > 1 else None
     return NextMovePair(node, winner, best, second)

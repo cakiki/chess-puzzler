@@ -13,11 +13,13 @@ from .util import count_mates, material_count, material_diff, is_up_in_material,
 from .engine import win_chances, get_next_move_pair, EVAL_LIMIT, PAIR_LIMIT, MATE_DEFENSE_LIMIT, MATE_SOON
 
 logger = logging.getLogger(__name__)
+
+
 class Generator:
     def __init__(self, engine: SimpleEngine):
         self.engine = engine
         self.not_analysed_warning = False
-    
+
     def _make_puzzle(self, node, solution, cp):
         parent = node.parent
         fen = parent.board().fen()
@@ -25,7 +27,8 @@ class Generator:
         pov = node.board().turn
         game_url = node.game().headers.get("Site", "")
         game_id = game_url[20:] if len(game_url) > 20 else game_url
-        return Puzzle(fen=fen, moves=moves, cp=cp, pov=pov, game_id=game_id)
+        return Puzzle(fen=fen, moves=moves, cp=cp, pov=pov, node=node, game_id=game_id)
+
     def is_valid_mate_in_one(self, pair: NextMovePair) -> bool:
         if pair.best.score != Mate(1):
             return False
@@ -34,22 +37,22 @@ class Generator:
             return True
         if pair.second.score == Mate(1):
             # if there's more than one mate in one, gotta look if the best non-mating move is bad enough
-            logger.debug('Looking for best non-mating move...')
+            logger.debug("Looking for best non-mating move...")
             mates = count_mates(copy.deepcopy(pair.node.board()))
-            info = self.engine.analyse(pair.node.board(), multipv = mates + 1, limit = PAIR_LIMIT)
-            scores =  [pv["score"].pov(pair.winner) for pv in info]
+            info = self.engine.analyse(pair.node.board(), multipv=mates + 1, limit=PAIR_LIMIT)
+            scores = [pv["score"].pov(pair.winner) for pv in info]
             # the first non-matein1 move is the last element
             if scores[-1] < Mate(1) and win_chances(scores[-1]) > non_mate_win_threshold:
-                    return False
+                return False
             return True
         return False
 
     # is pair.best the only continuation?
     def is_valid_attack(self, pair: NextMovePair) -> bool:
         return (
-            pair.second is None or
-            self.is_valid_mate_in_one(pair) or
-            win_chances(pair.best.score) > win_chances(pair.second.score) + 0.7
+            pair.second is None
+            or self.is_valid_mate_in_one(pair)
+            or win_chances(pair.best.score) > win_chances(pair.second.score) + 0.7
         )
 
     def get_next_pair(self, node: ChildNode, winner: Color) -> Optional[NextMovePair]:
@@ -60,7 +63,7 @@ class Generator:
         return pair
 
     def get_next_move(self, node: ChildNode, limit: chess.engine.Limit) -> Optional[Move]:
-        result = self.engine.play(node.board(), limit = limit)
+        result = self.engine.play(node.board(), limit=limit)
         return result.move if result else None
 
     def cook_mate(self, node: ChildNode, winner: Color) -> Optional[List[Move]]:
@@ -91,7 +94,6 @@ class Generator:
 
         return [move] + follow_up
 
-
     def cook_advantage(self, node: ChildNode, winner: Color) -> Optional[List[NextMovePair]]:
 
         board = node.board()
@@ -114,10 +116,9 @@ class Generator:
 
         return [pair] + follow_up
 
-
     def analyze_game(self, game: Game, tier: int) -> Optional[Puzzle]:
 
-        logger.debug(f'Analyzing tier {tier} {game.headers.get("Site")}...')
+        logger.debug(f"Analyzing tier {tier} {game.headers.get('Site')}...")
 
         prev_score: Score = Cp(20)
         seen_epds: Set[str] = set()
@@ -137,7 +138,9 @@ class Generator:
 
             if not current_eval:
                 if not self.not_analysed_warning:
-                    logger.warning("Game not already analysed by stockfish, will make one but consider using already analysed games from Lichess")
+                    logger.warning(
+                        "Game not already analysed by stockfish, will make one but consider using already analysed games from Lichess"
+                    )
                     self.not_analysed_warning = True
                 logger.debug("Move without eval on ply {}, computing...".format(node.ply()))
                 current_eval = self.engine.analyse(node.board(), EVAL_LIMIT)["score"]
@@ -163,8 +166,9 @@ class Generator:
 
         return None
 
-
-    def analyze_position(self, node: ChildNode, prev_score: Score, current_eval: PovScore, tier: int) -> Union[Puzzle, Score]:
+    def analyze_position(
+        self, node: ChildNode, prev_score: Score, current_eval: PovScore, tier: int
+    ) -> Union[Puzzle, Score]:
 
         board = node.board()
         winner = board.turn
@@ -178,10 +182,16 @@ class Generator:
         logger.debug("{} {} to {}".format(node.ply(), node.move.uci() if node.move else None, score))
 
         if prev_score > Cp(300) and score < MATE_SOON:
-            logger.debug("{} Too much of a winning position to start with {} -> {}".format(node.ply(), prev_score, score))
+            logger.debug(
+                "{} Too much of a winning position to start with {} -> {}".format(node.ply(), prev_score, score)
+            )
             return score
         if is_up_in_material(board, winner):
-            logger.debug("{} already up in material {} {} {}".format(node.ply(), winner, material_count(board, winner), material_count(board, not winner)))
+            logger.debug(
+                "{} already up in material {} {} {}".format(
+                    node.ply(), winner, material_count(board, winner), material_count(board, not winner)
+                )
+            )
             return score
         elif score >= Mate(1) and tier < 3:
             logger.debug("{} mate in one".format(node.ply()))
@@ -198,14 +208,14 @@ class Generator:
                 return score
             logger.debug("Advantage {}#{} {} -> {}. Probing...".format(game_url, node.ply(), prev_score, score))
             puzzle_node = copy.deepcopy(node)
-            solution : Optional[List[NextMovePair]] = self.cook_advantage(puzzle_node, winner)
+            solution: Optional[List[NextMovePair]] = self.cook_advantage(puzzle_node, winner)
             if not solution:
                 return score
             while len(solution) % 2 == 0 or not solution[-1].second:
                 if not solution[-1].second:
                     logger.debug("Remove final only-move")
                 solution = solution[:-1]
-            if not solution or len(solution) == 1 :
+            if not solution or len(solution) == 1:
                 logger.debug("Discard one-mover")
                 return score
             if tier < 3 and len(solution) == 3:
