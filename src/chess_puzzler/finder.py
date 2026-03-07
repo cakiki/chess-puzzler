@@ -27,7 +27,7 @@ class Generator:
         pov = node.board().turn
         game_url = node.game().headers.get("Site", "")
         game_id = game_url[20:] if len(game_url) > 20 else game_url
-        return Puzzle(fen=fen, moves=moves, cp=cp, pov=pov, node=node, game_id=game_id)
+        return Puzzle(fen=fen, moves=moves, cp=cp, pov=pov, node=node.parent, game_id=game_id)
 
     def is_valid_mate_in_one(self, pair: NextMovePair) -> bool:
         if pair.best.score != Mate(1):

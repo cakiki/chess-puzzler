@@ -18,8 +18,8 @@ from chess import (
     BLACK,
 )
 from chess.pgn import ChildNode
-from model import Puzzle
-from util import (
+from .model import Puzzle
+from .util import (
     material_diff,
     VALUES,
     KING_VALUES,
