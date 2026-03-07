@@ -78,13 +78,13 @@ def count_mates(board: chess.Board) -> int:
     return mates
 
 
-def next_node(node: ChildNode) -> Optional[ChildNode]:
+def get_next_node(node: ChildNode) -> Optional[ChildNode]:
     return node.variations[0] if node.variations else None
 
 
-def next_next_node(node: ChildNode) -> Optional[ChildNode]:
-    nn = next_node(node)
-    return next_node(nn) if nn else None
+def get_next_next_node(node: ChildNode) -> Optional[ChildNode]:
+    next_node = get_next_node(node)
+    return get_next_node(next_node) if next_node else None
 
 
 def piece_value(piece_type: chess.PieceType) -> int:

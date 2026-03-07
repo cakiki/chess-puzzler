@@ -55,7 +55,7 @@ def find(pgn, engine, threads, output, tier, verbose):
                                     "game_id": puzzle.game_id,
                                 }
                             )
-                            + "\\n"
+                            + "\n"
                         )
                         if out == sys.stdout:
                             out.flush()
