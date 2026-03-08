@@ -7,11 +7,10 @@ from ..model import Puzzle
 from ..util import (
     material_diff,
     VALUES,
-
     is_hanging,
-
     is_trapped,
 )
+
 
 def sacrifice(puzzle: Puzzle) -> bool:
     # down in material compared to initial position, after moving
@@ -21,6 +20,7 @@ def sacrifice(puzzle: Puzzle) -> bool:
         if d - initial <= -2:
             return not any(n.move.promotion for n in puzzle.mainline[::2][1:])
     return False
+
 
 def hanging_piece(puzzle: Puzzle) -> bool:
     to = puzzle.mainline[1].move.to_square

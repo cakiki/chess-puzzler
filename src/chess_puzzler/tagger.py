@@ -3,10 +3,8 @@ import chess
 from chess import (
     square_rank,
     square_file,
-    Board,
     SquareSet,
     Piece,
-    PieceType,
     square_distance,
     KING,
     QUEEN,
@@ -14,11 +12,10 @@ from chess import (
     BISHOP,
     KNIGHT,
     PAWN,
-    WHITE,
-    BLACK,
 )
 from chess.pgn import ChildNode
 
+from chess_puzzler.tags.endgame import piece_endgame, queen_rook_endgame
 from chess_puzzler.tags.mate import (
     anastasia_mate,
     arabian_mate,
@@ -198,9 +195,6 @@ def double_check(puzzle: Puzzle) -> bool:
     return False
 
 
-
-
-
 def x_ray(puzzle: Puzzle) -> bool:
     for node in puzzle.mainline[1::2][1:]:
         if not is_capture(node):
@@ -237,8 +231,6 @@ def fork(puzzle: Puzzle) -> bool:
             if nb > 1:
                 return True
     return False
-
-
 
 
 def overloading(puzzle: Puzzle) -> bool:
@@ -673,25 +665,3 @@ def capturing_defender(puzzle: Puzzle) -> bool:
                 ):
                     return True
     return False
-
-
-def piece_endgame(puzzle: Puzzle, piece_type: PieceType) -> bool:
-    for board in [puzzle.mainline[i].board() for i in [0, 1]]:
-        if not board.pieces(piece_type, WHITE) and not board.pieces(piece_type, BLACK):
-            return False
-        for piece in board.piece_map().values():
-            if not piece.piece_type in [KING, PAWN, piece_type]:
-                return False
-    return True
-
-
-def queen_rook_endgame(puzzle: Puzzle) -> bool:
-    def test(board: Board) -> bool:
-        pieces = board.piece_map().values()
-        return (
-            len([p for p in pieces if p.piece_type == QUEEN]) == 1
-            and any(p.piece_type == ROOK for p in pieces)
-            and all(p.piece_type in [QUEEN, ROOK, PAWN, KING] for p in pieces)
-        )
-
-    return all(test(puzzle.mainline[i].board()) for i in [0, 1])
