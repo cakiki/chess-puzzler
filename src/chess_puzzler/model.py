@@ -22,6 +22,16 @@ class Puzzle:
     def moves_uci(self) -> list[str]:
         return [m.uci() for m in self.moves]
 
+    def to_dict(self) -> dict:
+        return {
+            "fen": self.fen,
+            "moves": self.moves_uci(),
+            "cp": self.cp,
+            "pov": "white" if self.pov else "black",
+            "game_id": self.game_id,
+            "tags": self.tags,
+        }
+
 
 @dataclass
 class EngineMove:
