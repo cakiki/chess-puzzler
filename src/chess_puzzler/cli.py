@@ -50,19 +50,7 @@ def find(pgn, engine, threads, output, tier, verbose, tag):
                             from .tagger import cook
 
                             puzzle.tags = cook(puzzle)
-                        out.write(
-                            json.dumps(
-                                {
-                                    "fen": puzzle.fen,
-                                    "moves": puzzle.moves_uci(),
-                                    "cp": puzzle.cp,
-                                    "pov": "white" if puzzle.pov else "black",
-                                    "game_id": puzzle.game_id,
-                                    "tags": puzzle.tags,
-                                }
-                            )
-                            + "\n"
-                        )
+                        out.write(json.dumps(puzzle.to_dict()) + "\n")
                         if out == sys.stdout:
                             out.flush()
                         logger.info(f"  Puzzle: {puzzle.fen[:30]}... ({len(puzzle.moves)} moves)")
