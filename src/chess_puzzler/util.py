@@ -1,7 +1,7 @@
 from typing import List, Optional, Tuple
 
 import chess
-from chess import Color, Board, Piece, Square, square_rank, square_distance
+from chess import Color, Board, Piece, Square, square_file, square_rank, square_distance
 from chess.pgn import ChildNode
 from chess import KING, QUEEN, ROOK, BISHOP, KNIGHT, PAWN
 
@@ -165,3 +165,18 @@ def is_trapped(board: Board, square: Square) -> bool:
 
 def attacker_pieces(board: Board, color: Color, square: Square) -> List[Piece]:
     return [p for p in [board.piece_at(s) for s in board.attackers(color, square)] if p]
+
+
+def squares_are_collinear(sq1: Square, sq2: Square, sq3: Square) -> bool:
+    r1, f1 = square_rank(sq1), square_file(sq1)
+    r2, f2 = square_rank(sq2), square_file(sq2)
+    r3, f3 = square_rank(sq3), square_file(sq3)
+    if r1 == r2 == r3:
+        return True
+    if f1 == f2 == f3:
+        return True
+    if (r1 - f1) == (r2 - f2) == (r3 - f3):
+        return True
+    if (r1 + f1) == (r2 + f2) == (r3 + f3):
+        return True
+    return False

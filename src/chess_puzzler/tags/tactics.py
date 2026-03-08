@@ -1,5 +1,6 @@
 import chess
 from chess import (
+    BISHOP,
     square_file,
     SquareSet,
     Piece,
@@ -7,6 +8,7 @@ from chess import (
     QUEEN,
     ROOK,
     PAWN,
+    square_rank,
 )
 from chess.pgn import ChildNode
 
@@ -26,6 +28,7 @@ from ..util import (
     attacked_opponent_pieces,
     attacked_opponent_squares,
     is_castling,
+    squares_are_collinear,
 )
 
 
@@ -429,4 +432,34 @@ def capturing_defender(puzzle: Puzzle) -> bool:
                     and not init_board.is_check()
                 ):
                     return True
+    return False
+
+
+def collinear(puzzle: Puzzle) -> bool:
+    # 1. player moves a ray piece without capturing
+    for node in puzzle.mainline[1::2]:
+        moving_piece = moved_piece_type(node)
+        if moving_piece not in RAY_PIECE_TYPES:
+            continue
+        prev_board = node.parent.board()
+        if is_capture(node):
+            continue
+        from_sq = node.move.from_square
+        to_sq = node.move.to_square
+        for square in prev_board.attacks(from_sq):
+            piece = prev_board.piece_at(square)
+            if not piece or piece.color == puzzle.pov or piece.piece_type not in RAY_PIECE_TYPES:
+                continue
+            # 2. from, opponent piece, and destination are all on the same line
+            if not squares_are_collinear(from_sq, square, to_sq):
+                continue
+            # 3. opponent piece can also move along this line type
+            is_orthogonal = square_rank(from_sq) == square_rank(square) or square_file(from_sq) == square_file(square)
+            if is_orthogonal and piece.piece_type == BISHOP:
+                continue
+            if not is_orthogonal and piece.piece_type == ROOK:
+                continue
+            # 4. capture was legal but player chose to stay on the line
+            if chess.Move(from_sq, square) in prev_board.legal_moves:
+                return True
     return False
