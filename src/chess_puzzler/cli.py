@@ -2,6 +2,7 @@ try:
     import click
 except ImportError:
     import sys
+
     print("CLI requires click. Install with: pip install chess-puzzler[cli]", file=sys.stderr)
     sys.exit(1)
 
@@ -54,6 +55,7 @@ def find(pgn, engine, threads, output, tier, verbose, tag):
                     if puzzle:
                         if tag:
                             from .tagger import cook
+
                             puzzle.tags = cook(puzzle)
                         out.write(
                             json.dumps(
@@ -63,7 +65,7 @@ def find(pgn, engine, threads, output, tier, verbose, tag):
                                     "cp": puzzle.cp,
                                     "pov": "white" if puzzle.pov else "black",
                                     "game_id": puzzle.game_id,
-                                    "tags": puzzle.tags
+                                    "tags": puzzle.tags,
                                 }
                             )
                             + "\n"
@@ -77,6 +79,7 @@ def find(pgn, engine, threads, output, tier, verbose, tag):
         eng.close()
         if out != sys.stdout:
             out.close()
+
 
 if __name__ == "__main__":
     main()
