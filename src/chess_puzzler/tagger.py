@@ -8,8 +8,8 @@ from chess import (
 )
 
 
-from chess_puzzler.tags.endgame import piece_endgame, queen_rook_endgame
-from chess_puzzler.tags.mate import (
+from .tags.endgame import piece_endgame, queen_rook_endgame
+from .tags.mate import (
     anastasia_mate,
     arabian_mate,
     back_rank_mate,
@@ -19,8 +19,8 @@ from chess_puzzler.tags.mate import (
     mate_in,
     smothered_mate,
 )
-from chess_puzzler.tags.material import hanging_piece, sacrifice, trapped_piece
-from chess_puzzler.tags.misc import (
+from .tags.material import hanging_piece, sacrifice, trapped_piece
+from .tags.misc import (
     advanced_pawn,
     attacking_f2_f7,
     castling,
@@ -30,7 +30,7 @@ from chess_puzzler.tags.misc import (
     queenside_attack,
     under_promotion,
 )
-from chess_puzzler.tags.tactics import (
+from .tags.tactics import (
     attraction,
     capturing_defender,
     check_escape,

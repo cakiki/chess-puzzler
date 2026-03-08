@@ -18,6 +18,7 @@ from ..util import (
     attacker_pieces,
 )
 
+
 def smothered_mate(puzzle: Puzzle) -> bool:
     board = puzzle.mainline[-1].board()
     king_square = board.king(not puzzle.pov)
@@ -48,6 +49,7 @@ def mate_in(puzzle: Puzzle) -> Optional[str]:
         return "mateIn4"
     return "mateIn5"
 
+
 def dovetail_mate(puzzle: Puzzle) -> bool:
     node = puzzle.mainline[-1]
     board = node.board()
@@ -75,6 +77,7 @@ def dovetail_mate(puzzle: Puzzle) -> bool:
             return False
     return True
 
+
 def boden_or_double_bishop_mate(puzzle: Puzzle) -> Optional[str]:
     node = puzzle.mainline[-1]
     board = node.board()
@@ -91,7 +94,7 @@ def boden_or_double_bishop_mate(puzzle: Puzzle) -> Optional[str]:
         return "bodenMate"
     else:
         return "doubleBishopMate"
-    
+
 
 def arabian_mate(puzzle: Puzzle) -> bool:
     node = puzzle.mainline[-1]
@@ -118,6 +121,7 @@ def arabian_mate(puzzle: Puzzle) -> bool:
                 return True
     return False
 
+
 def hook_mate(puzzle: Puzzle) -> bool:
     node = puzzle.mainline[-1]
     board = node.board()
@@ -133,6 +137,7 @@ def hook_mate(puzzle: Puzzle) -> bool:
                     if pawn and pawn.piece_type == PAWN:
                         return True
     return False
+
 
 def anastasia_mate(puzzle: Puzzle) -> bool:
     node = puzzle.mainline[-1]
@@ -152,6 +157,7 @@ def anastasia_mate(puzzle: Puzzle) -> bool:
                 if knight is not None and knight.color == puzzle.pov and knight.piece_type == KNIGHT:
                     return True
     return False
+
 
 def back_rank_mate(puzzle: Puzzle) -> bool:
     node = puzzle.mainline[-1]
