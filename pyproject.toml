@@ -15,10 +15,10 @@ license = "AGPL-3.0-or-later"
 dependencies = [
     "chess",
     "tqdm",
+    "click"
 ]
 
 [project.optional-dependencies]
-cli = ["click"]
 dev = ["pytest", "ruff"]
 
 [tool.ruff]
