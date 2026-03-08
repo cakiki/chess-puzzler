@@ -11,7 +11,7 @@ class Puzzle:
     moves: list[Move]
     cp: int
     pov: Color
-    node: Optional[ChildNode] = field(default=None, repr=False)
+    node: Optional[GameNode] = field(default=None, repr=False)
     tags: list[str] = field(default_factory=list)
     game_id: str = ""
 

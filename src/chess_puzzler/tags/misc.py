@@ -10,7 +10,8 @@ from chess import (
     PAWN,
 )
 
-from chess_puzzler.tags.material import hanging_piece, sacrifice, trapped_piece
+from ..tags import register
+
 from ..model import Puzzle
 from ..util import (
     moved_piece_type,
@@ -19,7 +20,7 @@ from ..util import (
     is_castling,
 )
 
-
+@register("enPassant")
 def en_passant(puzzle: Puzzle) -> bool:
     for node in puzzle.mainline[1::2]:
         if (

@@ -10,3 +10,5 @@ def register(*tag_names):
         return fn
 
     return decorator
+
+from . import misc
