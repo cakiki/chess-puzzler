@@ -6,16 +6,19 @@ build-backend = "hatchling.build"
 name = "chess-puzzler"
 version = "0.1.0"
 requires-python = ">=3.10"
+maintainers = [
+  {name = "Christopher Akiki", email = "christopher.akiki@gmail.com"}
+]
 description = "Find and tag chess puzzles from chess games"
 readme = "README.md"
 license = "AGPL-3.0-or-later"
 dependencies = [
     "chess",
     "tqdm",
-    "click",
 ]
 
 [project.optional-dependencies]
+cli = ["click"]
 dev = ["pytest", "ruff"]
 
 [tool.ruff]
