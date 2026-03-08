@@ -1,10 +1,16 @@
+try:
+    import click
+except ImportError:
+    import sys
+    print("CLI requires click. Install with: pip install chess-puzzler[cli]", file=sys.stderr)
+    sys.exit(1)
+
 import json
 import logging
 import sys
 from pathlib import Path
 
 import chess.pgn
-import click
 
 from .engine import open_engine
 from .finder import Generator
