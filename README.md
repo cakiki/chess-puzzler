@@ -4,6 +4,10 @@ Python package to generate and tag puzzles from chess games.
 
 ## Installation
 
+From pypi:
+`pip install chess-puzzler`
+
+From source:
 `pip install git+https://github.com/cakiki/chess-puzzler.git`
 
 You also need stockfish on your path to find puzzles in games.
