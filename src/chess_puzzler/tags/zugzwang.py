@@ -3,6 +3,7 @@ from chess.engine import SimpleEngine
 from ..model import Puzzle
 from ..engine import ZUGZWANG_LIMIT, win_chances
 
+
 def zugzwang(engine: SimpleEngine, puzzle: Puzzle) -> bool:
     for node in puzzle.mainline[1::2]:
         board = node.board()

@@ -189,6 +189,7 @@ def cook(puzzle: Puzzle, engine: Optional[SimpleEngine] = None) -> List[str]:
 
     if engine:
         from .tags.zugzwang import zugzwang
+
         if zugzwang(engine, puzzle):
             tags.append("zugzwang")
     return tags
