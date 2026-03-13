@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Optional
 from chess import (
     QUEEN,
     ROOK,
@@ -6,6 +6,7 @@ from chess import (
     KNIGHT,
     PAWN,
 )
+from chess.engine import SimpleEngine
 
 
 from .tags.endgame import piece_endgame, queen_rook_endgame
@@ -54,7 +55,7 @@ from .tags.tactics import (
 from .model import Puzzle
 
 
-def cook(puzzle: Puzzle) -> List[str]:
+def cook(puzzle: Puzzle, engine: Optional[SimpleEngine] = None) -> List[str]:
     tags: List[str] = []
 
     mate_tag = mate_in(puzzle)
@@ -186,4 +187,8 @@ def cook(puzzle: Puzzle) -> List[str]:
     else:
         tags.append("long")
 
+    if engine:
+        from .tags.zugzwang import zugzwang
+        if zugzwang(engine, puzzle):
+            tags.append("zugzwang")
     return tags

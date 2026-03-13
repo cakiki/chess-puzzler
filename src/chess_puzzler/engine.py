@@ -8,6 +8,7 @@ EVAL_LIMIT = Limit(depth=15, time=30, nodes=10_000_000)
 PAIR_LIMIT = Limit(depth=50, time=30, nodes=30_000_000)
 MATE_DEFENSE_LIMIT = Limit(depth=15, time=10, nodes=10_000_000)
 MATE_SOON = Mate(15)
+ZUGZWANG_LIMIT = Limit(depth=30, time=10, nodes=12_000_000)
 MULTIPLIER = -0.00368208  # https://github.com/lichess-org/lila/pull/11148
 
 
