@@ -49,7 +49,7 @@ def find(pgn, engine, threads, output, tier, verbose, tag):
                         if tag:
                             from .tagger import cook
 
-                            puzzle.tags = cook(puzzle)
+                            puzzle.tags = cook(puzzle, engine=eng)
                         out.write(json.dumps(puzzle.to_dict()) + "\n")
                         if out == sys.stdout:
                             out.flush()

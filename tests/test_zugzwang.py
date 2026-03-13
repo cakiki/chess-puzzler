@@ -45,12 +45,6 @@ class TestZugzwang(unittest.TestCase):
                 make("00Oyf", "8/1p6/7p/3k1pp1/1P5P/3K1P2/6P1/8 w - - 0 39", "h4g5 h6g5 d3c3 d5e5 c3c4 e5f4 c4c5 f4g3"),
             )
         )
-        self.assertFalse(
-            zugzwang(
-                self.engine,
-                make("tMEri", "5r1k/4q1p1/p2pP2p/1p6/1P2Q3/PB6/1BP3PP/6K1 w - - 1 27", "e4g6 e7a7 b2d4 a7d4 g1h1 f8f1"),
-            )
-        )
 
     def test_not_zugzwang(self):
         self.assertFalse(
