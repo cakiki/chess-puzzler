@@ -21,7 +21,6 @@ from ..util import (
 )
 
 
-@register("enPassant")
 def en_passant(puzzle: Puzzle) -> bool:
     for node in puzzle.mainline[1::2]:
         if (
