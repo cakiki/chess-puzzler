@@ -10,8 +10,6 @@ from chess import (
     PAWN,
 )
 
-from ..tags import register
-
 from ..model import Puzzle
 from ..util import (
     moved_piece_type,
