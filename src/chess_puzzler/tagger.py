@@ -56,7 +56,16 @@ from .model import Puzzle
 
 
 def cook(puzzle: Puzzle, engine: Optional[SimpleEngine] = None) -> List[str]:
-    tags: List[str] = []
+    """_summary_
+
+    Args:
+        puzzle (Puzzle): _description_
+        engine (Optional[SimpleEngine], optional): _description_. Defaults to None.
+
+    Returns:
+        List[str]: _description_
+    """
+    tags = []
 
     mate_tag = mate_in(puzzle)
     if mate_tag:

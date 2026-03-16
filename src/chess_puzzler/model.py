@@ -17,12 +17,27 @@ class Puzzle:
 
     @property
     def mainline(self) -> list[ChildNode]:
+        """_summary_
+
+        Returns:
+            list[ChildNode]: _description_
+        """
         return list(self.node.mainline()) if self.node else []
 
     def moves_uci(self) -> list[str]:
+        """_summary_
+
+        Returns:
+            list[str]: _description_
+        """
         return [m.uci() for m in self.moves]
 
     def to_dict(self) -> dict:
+        """_summary_
+
+        Returns:
+            dict: _description_
+        """
         return {
             "fen": self.fen,
             "moves": self.moves_uci(),

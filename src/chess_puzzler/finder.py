@@ -21,6 +21,16 @@ class Generator:
         self.not_analysed_warning = False
 
     def _make_puzzle(self, node, solution, cp):
+        """_summary_
+
+        Args:
+            node (_type_): _description_
+            solution (_type_): _description_
+            cp (_type_): _description_
+
+        Returns:
+            _type_: _description_
+        """
         parent = node.parent
         fen = parent.board().fen()
         moves = [node.move] + solution
@@ -36,6 +46,14 @@ class Generator:
         return Puzzle(fen=fen, moves=moves, cp=cp, pov=pov, node=game, game_id=game_id)
 
     def is_valid_mate_in_one(self, pair: NextMovePair) -> bool:
+        """_summary_
+
+        Args:
+            pair (NextMovePair): _description_
+
+        Returns:
+            bool: _description_
+        """
         if pair.best.score != Mate(1):
             return False
         non_mate_win_threshold = 0.6
@@ -55,6 +73,14 @@ class Generator:
 
     # is pair.best the only continuation?
     def is_valid_attack(self, pair: NextMovePair) -> bool:
+        """_summary_
+
+        Args:
+            pair (NextMovePair): _description_
+
+        Returns:
+            bool: _description_
+        """
         return (
             pair.second is None
             or self.is_valid_mate_in_one(pair)
@@ -62,6 +88,15 @@ class Generator:
         )
 
     def get_next_pair(self, node: ChildNode, winner: Color) -> Optional[NextMovePair]:
+        """_summary_
+
+        Args:
+            node (ChildNode): _description_
+            winner (Color): _description_
+
+        Returns:
+            Optional[NextMovePair]: _description_
+        """
         pair = get_next_move_pair(self.engine, node, winner, PAIR_LIMIT)
         if node.board().turn == winner and not self.is_valid_attack(pair):
             logger.debug("No valid attack {}".format(pair))
@@ -73,6 +108,15 @@ class Generator:
         return result.move if result else None
 
     def cook_mate(self, node: ChildNode, winner: Color) -> Optional[List[Move]]:
+        """_summary_
+
+        Args:
+            node (ChildNode): _description_
+            winner (Color): _description_
+
+        Returns:
+            Optional[List[Move]]: _description_
+        """
 
         board = node.board()
 
@@ -101,6 +145,15 @@ class Generator:
         return [move] + follow_up
 
     def cook_advantage(self, node: ChildNode, winner: Color) -> Optional[List[NextMovePair]]:
+        """_summary_
+
+        Args:
+            node (ChildNode): _description_
+            winner (Color): _description_
+
+        Returns:
+            Optional[List[NextMovePair]]: _description_
+        """
 
         board = node.board()
 
@@ -123,6 +176,15 @@ class Generator:
         return [pair] + follow_up
 
     def analyze_game(self, game: Game, tier: int) -> Optional[Puzzle]:
+        """_summary_
+
+        Args:
+            game (Game): _description_
+            tier (int): _description_
+
+        Returns:
+            Optional[Puzzle]: _description_
+        """
 
         logger.debug(f"Analyzing tier {tier} {game.headers.get('Site')}...")
 
@@ -175,6 +237,17 @@ class Generator:
     def analyze_position(
         self, node: ChildNode, prev_score: Score, current_eval: PovScore, tier: int
     ) -> Union[Puzzle, Score]:
+        """_summary_
+
+        Args:
+            node (ChildNode): _description_
+            prev_score (Score): _description_
+            current_eval (PovScore): _description_
+            tier (int): _description_
+
+        Returns:
+            Union[Puzzle, Score]: _description_
+        """
 
         board = node.board()
         winner = board.turn

@@ -20,6 +20,14 @@ from ..util import (
 
 
 def smothered_mate(puzzle: Puzzle) -> bool:
+    """_summary_
+
+    Args:
+        puzzle (Puzzle): _description_
+
+    Returns:
+        bool: _description_
+    """
     board = puzzle.mainline[-1].board()
     king_square = board.king(not puzzle.pov)
     assert king_square is not None
@@ -36,6 +44,14 @@ def smothered_mate(puzzle: Puzzle) -> bool:
 
 
 def mate_in(puzzle: Puzzle) -> Optional[str]:
+    """_summary_
+
+    Args:
+        puzzle (Puzzle): _description_
+
+    Returns:
+        Optional[str]: _description_
+    """
     if not puzzle.mainline[-1].board().is_checkmate():
         return None
     moves_to_mate = len(puzzle.mainline) // 2
@@ -51,6 +67,14 @@ def mate_in(puzzle: Puzzle) -> Optional[str]:
 
 
 def dovetail_mate(puzzle: Puzzle) -> bool:
+    """_summary_
+
+    Args:
+        puzzle (Puzzle): _description_
+
+    Returns:
+        bool: _description_
+    """
     node = puzzle.mainline[-1]
     board = node.board()
     king = board.king(not puzzle.pov)
@@ -79,6 +103,14 @@ def dovetail_mate(puzzle: Puzzle) -> bool:
 
 
 def boden_or_double_bishop_mate(puzzle: Puzzle) -> Optional[str]:
+    """_summary_
+
+    Args:
+        puzzle (Puzzle): _description_
+
+    Returns:
+        Optional[str]: _description_
+    """
     node = puzzle.mainline[-1]
     board = node.board()
     king = board.king(not puzzle.pov)
@@ -97,6 +129,14 @@ def boden_or_double_bishop_mate(puzzle: Puzzle) -> Optional[str]:
 
 
 def arabian_mate(puzzle: Puzzle) -> bool:
+    """_summary_
+
+    Args:
+        puzzle (Puzzle): _description_
+
+    Returns:
+        bool: _description_
+    """
     node = puzzle.mainline[-1]
     board = node.board()
     king = board.king(not puzzle.pov)
@@ -123,6 +163,14 @@ def arabian_mate(puzzle: Puzzle) -> bool:
 
 
 def hook_mate(puzzle: Puzzle) -> bool:
+    """_summary_
+
+    Args:
+        puzzle (Puzzle): _description_
+
+    Returns:
+        bool: _description_
+    """
     node = puzzle.mainline[-1]
     board = node.board()
     king = board.king(not puzzle.pov)
@@ -140,6 +188,14 @@ def hook_mate(puzzle: Puzzle) -> bool:
 
 
 def anastasia_mate(puzzle: Puzzle) -> bool:
+    """_summary_
+
+    Args:
+        puzzle (Puzzle): _description_
+
+    Returns:
+        bool: _description_
+    """
     node = puzzle.mainline[-1]
     board = node.board()
     king = board.king(not puzzle.pov)
@@ -160,6 +216,14 @@ def anastasia_mate(puzzle: Puzzle) -> bool:
 
 
 def back_rank_mate(puzzle: Puzzle) -> bool:
+    """_summary_
+
+    Args:
+        puzzle (Puzzle): _description_
+
+    Returns:
+        bool: _description_
+    """
     node = puzzle.mainline[-1]
     board = node.board()
     king = board.king(not puzzle.pov)
