@@ -175,16 +175,9 @@ class Generator:
 
         return [pair] + follow_up
 
-    def analyze_game(self, game: Game, tier: int) -> Optional[Puzzle]:
-        """_summary_
+    def analyze_game(self, game: Game, tier: int, all_puzzles: bool = False) -> list[Puzzle]:
 
-        Args:
-            game (Game): _description_
-            tier (int): _description_
-
-        Returns:
-            Optional[Puzzle]: _description_
-        """
+        puzzles = []
 
         logger.debug(f"Analyzing tier {tier} {game.headers.get('Site')}...")
 
@@ -226,13 +219,17 @@ class Generator:
             result = self.analyze_position(node, prev_score, current_eval, tier)
 
             if isinstance(result, Puzzle):
-                return result
+                if not all_puzzles:
+                    return [result]
+                puzzles.append(result)
+                prev_score = Cp(20)
+            else:
+                prev_score = -result
 
-            prev_score = -result
+        if not puzzles:
+            logger.debug("Found nothing from {}".format(game.headers.get("Site")))
 
-        logger.debug("Found nothing from {}".format(game.headers.get("Site")))
-
-        return None
+        return puzzles
 
     def analyze_position(
         self, node: ChildNode, prev_score: Score, current_eval: PovScore, tier: int
