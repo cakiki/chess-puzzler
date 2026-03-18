@@ -25,7 +25,8 @@ def main():
 @click.option("--tier", default=10, type=int)
 @click.option("-v", "--verbose", count=True)
 @click.option("--tag", is_flag=True, help="Also tag puzzles")
-def find(pgn, engine, threads, output, tier, verbose, tag):
+@click.option("--all", "all_puzzles", is_flag=True, help="Find all puzzles per game")
+def find(pgn, engine, threads, output, tier, verbose, tag, all_puzzles):
     logging.basicConfig(format="%(asctime)s %(levelname)-4s %(message)s", datefmt="%m/%d %H:%M")
     logger.setLevel(logging.DEBUG if verbose >= 2 else logging.INFO if verbose else logging.WARNING)
 
@@ -44,8 +45,8 @@ def find(pgn, engine, threads, output, tier, verbose, tag):
                 logger.info(f"Game {game_num}: {game.headers.get('White', '?')} vs {game.headers.get('Black', '?')}")
 
                 try:
-                    puzzle = generator.analyze_game(game, tier)
-                    if puzzle:
+                    puzzles = generator.analyze_game(game, tier, all_puzzles=all_puzzles)
+                    for puzzle in puzzles:
                         if tag:
                             from .tagger import cook
 
