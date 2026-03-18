@@ -1,7 +1,5 @@
 from dataclasses import dataclass
 
-from chess.engine import Limit, Mate
-
 
 @dataclass
 class FinderConfig:
@@ -11,6 +9,8 @@ class FinderConfig:
     max_prev_score: int = 300
     min_clear_advantage: int = 400
     initial_score: int = 20
+    mate_soon: int = 15
+
 
 @dataclass
 class EngineConfig:
@@ -26,10 +26,4 @@ class EngineConfig:
     zugzwang_depth: int = 30
     zugzwang_time: int = 10
     zugzwang_nodes: int = 12_000_000
-
-EVAL_LIMIT = Limit(depth=15, time=30, nodes=10_000_000)
-PAIR_LIMIT = Limit(depth=50, time=30, nodes=30_000_000)
-MATE_DEFENSE_LIMIT = Limit(depth=15, time=10, nodes=10_000_000)
-MATE_SOON = Mate(15)
-ZUGZWANG_LIMIT = Limit(depth=30, time=10, nodes=12_000_000)
-MULTIPLIER = -0.00368208  # https://github.com/lichess-org/lila/pull/11148
+    win_chances_multiplier: float = -0.00368208  # https://github.com/lichess-org/lila/pull/11148
