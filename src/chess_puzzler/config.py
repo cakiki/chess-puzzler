@@ -32,3 +32,5 @@ class EngineConfig:
 class MetricsConfig:
     counter_intuitive_threshold: float = 0.1
     max_depth: int = 30
+    critical_depth_weight : float = 0.8
+    capture_material_weight : float = 0.1
