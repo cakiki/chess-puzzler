@@ -35,4 +35,4 @@ This is a refactor of [ornicar/lichess-puzzler](https://github.com/ornicar/liche
 
 ## License
 
-chess-puzzler is licensed under the GNU Affero General Public License 3 or any later version of your choice.
+`chess-puzzler` is licensed under the GNU Affero General Public License 3 or any later version of your choice.
