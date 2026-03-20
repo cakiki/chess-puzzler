@@ -27,3 +27,8 @@ class EngineConfig:
     zugzwang_time: int = 10
     zugzwang_nodes: int = 12_000_000
     win_chances_multiplier: float = -0.00368208  # https://github.com/lichess-org/lila/pull/11148
+
+@dataclass
+class MetricsConfig:
+    counter_intuitive_threshold: float = 0.1
+    max_depth: int = 30
