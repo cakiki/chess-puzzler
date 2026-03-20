@@ -198,7 +198,11 @@ def cook(puzzle: Puzzle, engine: Optional[SimpleEngine] = None) -> List[str]:
 
     if engine:
         from .tags.zugzwang import zugzwang
+        from .metrics import critical_depth, counter_intuitiveness
 
         if zugzwang(engine, puzzle):
             tags.append("zugzwang")
+        cd = critical_depth(engine, puzzle)
+        if cd is not None and counter_intuitiveness(engine, puzzle, cd=cd) >= 0.1:
+            tags.append("counterIntuitive")
     return tags
