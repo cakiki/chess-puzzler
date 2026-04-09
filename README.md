@@ -21,10 +21,24 @@ Finding puzzles and some tagging functions require a UCI-compliant chess engine 
 You can use chess-puzzler as a CLI tool or as a python library:
 
 ### CLI
-TODO
+```bash
+puzzler find game.pgn --all --tag
+```
 
 ### Library
-TODO
+```python
+import chess.pgn
+from chess_puzzler import Generator, open_engine
+from chess_puzzler.tagger import cook
+
+engine = open_engine("stockfish")
+game = chess.pgn.read_game(open("game.pgn"))
+puzzles = Generator(engine).analyze_game(game, all_puzzles=True)
+for puzzle in puzzles:
+    puzzle.tags = cook(puzzle, engine=engine)
+    print(puzzle.to_dict())
+engine.close()
+```
 
 > [!IMPORTANT]
 > Stockfish is non-deterministic when running multi-threaded. For reproducible results across different runs, make sure to run with `threads=1`.
