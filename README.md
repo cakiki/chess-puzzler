@@ -43,6 +43,10 @@ engine.close()
 > [!IMPORTANT]
 > Stockfish is non-deterministic when running multi-threaded. For reproducible results across different runs, make sure to run with `threads=1`.
  
+## Configuration
+
+TODO
+
 ## Inspiration
 
 This is a refactor of [ornicar/lichess-puzzler](https://github.com/ornicar/lichess-puzzler), also inspired by [kraktus/lichess-puzzler](https://github.com/kraktus/lichess-puzzler) and [fitztrev/puzzler](https://github.com/fitztrev/puzzler). The goal was to make the lichess-puzzler more pythonic and pip installable.
